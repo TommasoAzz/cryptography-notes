@@ -2,12 +2,14 @@
 \usepackage[left=2cm, right=2cm, top=3cm, bottom=3cm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{subfiles}
+\usepackage[english]{babel}
 \usepackage{flafter}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{eurosym}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{courier}
@@ -18,6 +20,7 @@
 \usepackage{lastpage}
 \usepackage{fancyhdr}
 
+
 \pagestyle{fancy}
 \renewcommand{\footrulewidth}{0.4pt} 
 \fancyhf{}
@@ -26,3 +29,8 @@
 \fancyfoot[L]{Tommaso Azzalin}
 \fancyfoot[R]{\thepage\ of \pageref{LastPage}}
 \setlength{\headheight}{13.6pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}[section]
