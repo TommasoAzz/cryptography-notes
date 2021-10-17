@@ -83,7 +83,7 @@ $(m_0,m_1) \; \leftarrow{} \; A(1^n)$\\
 $k \; \leftarrow{} \; Gen(1^n)$\\
 $b \; \leftarrow{} \; \{0,1\}$\\
 $c \; \leftarrow{} \; Enc(k,m_b)$\\
-$b^* \; A(c)$\\
+$b^* \; \leftarrow{} \; A(c)$\\
 \textbf{Result}: $\neg(b \oplus{} b^*)$
 \begin{definition}[Security of an encryption scheme]
     An encryption scheme $\Pi$ is said to be \textit{secure against passive attacks} (i.e., when the attacker does not know the $Enc$ and $Dec$ functions) or \textit{secure w.r.t.} $PrivK^{eav}$
@@ -145,10 +145,10 @@ Let us analyse the behaviour of the newly constructed $D$:
 We are done: $\theta(n)$ is not negligible and this contradicts our hypothesis, hence we proved \ref{theorem:pseudorandomgen-security}.
 
 \begin{definition}[Variable Output-Length Generators]
-    A deterministic polytime algorithm $G$ is said to be \textbf{Variable Output-Length Generators} if from a seed $s \in{} \{0,1\}^n$ and a string in the form $1^l$ outputs a binary string $G(s,1^l)$ of length $l$ s.t.
+    A deterministic polytime algorithm $G$ is said to be \textbf{Variable Output-Length Generator} if from a seed $s \in{} \{0,1\}^n$ and a string in the form $1^l$ outputs a binary string $G(s,1^l)$ of length $l$ s.t.
     \begin{itemize}
         \item If $l < l'$, the string $G(s,1^l)$ is a prefix of $G(s,1^{l'})$.
-        \item For any polynomial $p: \mathbb{N} \rightarrow{} \mathbb{N}$, the algorithm $G_p$ defined by settings $G_p(s)=G(s,1^{p(|s|)})$ is a pseudo random (of fixed length $p$) generator.
+        \item For any polynomial $p: \mathbb{N} \rightarrow{} \mathbb{N}$ (what we usually called $l$), the algorithm $G_p$ defined by setting $G_p(s)=G(s,1^{p(|s|)})$ is a pseudo random generator (of fixed length $p$).
         \item $Enc(m,k) = G(k, 1^{|m|}) \oplus m$.
         \item $Dec(c,k) = G(k, 1^{|c|}) \oplus c$.
     \end{itemize}
@@ -157,7 +157,8 @@ We are done: $\theta(n)$ is not negligible and this contradicts our hypothesis, 
 \begin{lemma}
     For every pseudo random generator $G$ it is possible to construct from G a variable output-length pseudo random generator H.
 \end{lemma}
-This so-called \textit{stream ciphers} are designed to satisfy axioms of a Variable Output-Length Generators but \textbf{one cannot prove it} and \textbf{they are not encryption schemes}.
+\noindent
+These so-called \textit{stream ciphers} are designed to satisfy axioms of Variable Output-Length Generators but \textbf{one cannot prove it} and \textbf{they are not encryption schemes}.
 
 \section{Multiple encryptions}
 \begin{lemma}
@@ -172,11 +173,11 @@ Let us describe an adversary $A$ which wins with high probability against any su
 \begin{itemize}
     \item in the first phase, $A$ produces in output the two vectors (for example) $m_0 = (0^l, 0^l)$ and $m_0 = (0^l, 1^l)$;
     \item in the second phase, $A$ receives in input $c = (c_1, c_2)$, it compares $c_1$ and $c_2$ and produces in output $0$ if $c_1 = c_2$, $1$ otherwise;
-    \item it is easy to see that $Pr(PrivK^{mult}_{A,\Pi}(n) = 1) = 1$ because $c_1 = c_2 \; iff \; c = Enc(k,m_0)$ ($Enc$ is deterministic).
+    \item it is easy to see that $Pr(PrivK^{mult}_{A,\Pi}(n) = 1) = 1$ because $c_1 = c_2 \; \Leftrightarrow{} \; c = Enc(k,m_0)$ ($Enc$ is deterministic).
 \end{itemize}
 
 \noindent
-Stream ciphers become useful again (right now they are useless, as we showed) when we give $Enc$ an \textbf{internal state} or we pass a so-called $Initialization Vector (IV)$.
+Stream ciphers become useful again (right now they are useless, as we showed) when we give $Enc$ an \textbf{internal state} or we pass a so-called $Initialization \; Vector \; (IV)$.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{images/synchronized_mode}
