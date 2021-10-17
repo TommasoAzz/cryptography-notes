@@ -149,8 +149,8 @@ We are done: $\theta(n)$ is not negligible and this contradicts our hypothesis, 
     \begin{itemize}
         \item If $l < l'$, the string $G(s,1^l)$ is a prefix of $G(s,1^{l'})$.
         \item For any polynomial $p: \mathbb{N} \rightarrow{} \mathbb{N}$, the algorithm $G_p$ defined by settings $G_p(s)=G(s,1^{p(|s|)})$ is a pseudo random (of fixed length $p$) generator.
-        \item $Enc(m,k) = G(k, 1^|m|) \oplus m$.
-        \item $Dec(c,k) = G(k, 1^|c|) \oplus c$.
+        \item $Enc(m,k) = G(k, 1^{|m|}) \oplus m$.
+        \item $Dec(c,k) = G(k, 1^{|c|}) \oplus c$.
     \end{itemize}
 \end{definition}
 
@@ -163,9 +163,19 @@ This so-called \textit{stream ciphers} are designed to satisfy axioms of a Varia
 \begin{lemma}
     The scheme $\Pi^G$ is not secure with respect to $PrivK^{mult}$, not even if $G$ is pseudo random.
 \end{lemma}
+
 \begin{theorem}
     If $Enc$ is deterministic, then the scheme $\Pi = (Gen, Enc, Dec)$ cannot be secure with respect to $PrivK^{mult}$.
 \end{theorem}
+\paragraph{Proof}
+Let us describe an adversary $A$ which wins with high probability against any such scheme:
+\begin{itemize}
+    \item in the first phase, $A$ produces in output the two vectors (for example) $m_0 = (0^l, 0^l)$ and $m_0 = (0^l, 1^l)$;
+    \item in the second phase, $A$ receives in input $c = (c_1, c_2)$, it compares $c_1$ and $c_2$ and produces in output $0$ if $c_1 = c_2$, $1$ otherwise;
+    \item it is easy to see that $Pr(PrivK^{mult}_{A,\Pi}(n) = 1) = 1$ because $c_1 = c_2 \; iff \; c = Enc(k,m_0)$ ($Enc$ is deterministic).
+\end{itemize}
+
+\noindent
 Stream ciphers become useful again (right now they are useless, as we showed) when we give $Enc$ an \textbf{internal state} or we pass a so-called $Initialization Vector (IV)$.
 \begin{figure}[h]
     \centering
