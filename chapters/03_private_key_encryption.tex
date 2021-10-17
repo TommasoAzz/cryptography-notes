@@ -27,6 +27,7 @@ $$\epsilon'(n) = \epsilon(n)\cdot{}p(n)$$
 is itself negligible.\\
 We know that $\forall{} q: \mathbb{N} \rightarrow{} \mathbb{N}$ $\exists{} N \in{} \mathbb{N}\; s.t.\;\forall{} n > N$
 $$\epsilon(n) < \frac{1}{p(n)\cdot{}q(n)}$$
+This is because $\epsilon(n)$ is negligible and by definition is smaller than $\frac{1}{p(n)}$ and $\frac{1}{p(n)}$ hence also smaller than their product.
 Let us prove that $\epsilon'(n)$ is negligible, namely that $\forall{} q: \mathbb{N} \rightarrow{} \mathbb{N}$ $\exists{} N \in{} \mathbb{N}\; s.t.\;\forall{} n > N$
 $$\epsilon'(n) < \frac{1}{q(n)}$$
 To conclude, we know that:
@@ -102,7 +103,7 @@ In particular, $G(k)$ must be \textbf{pseudo random}, i.e., an efficient adversa
     \begin{itemize}
         \item $\forall{}n \in{} \mathbb{N}$ it holds that $l(n) > n$ (i.e., $l$ cannot be the identity function like in the OTP).
         \item $G$ is polytime.
-        \item For every PPT algorithm $D$ ($D$ stands for ``distinguisher") there exists $\epsilon{} \in{} \mathcal{NGL}$ s.t. $|Pr(D(s) = 1) - Pr(D(G(r)) = 1)| \le{} \epsilon(n)$ where $s$ has length $l(n)$, $r$ has length $n$ (i.e., algorithm $D$ can understand that $G$ is not returning proper random strings only with negligible probability).
+        \item For every PPT algorithm $D$ ($D$ stands for ``distinguisher") there exists $\epsilon{} \in{} \mathcal{NGL}$ s.t. $|Pr(D(s) = 1) - Pr(D(G(r)) = 1)| \le{} \epsilon(n)$ where $s$ and $r$ are (true) random strings; $s$ has length $l(n)$, $r$ has length $n$ and therefore $|G(r)|=l(n)$ (i.e., algorithm $D$ can understand that $G$ is not returning proper random strings only with negligible probability).
     \end{itemize}
 \end{definition}
 
@@ -118,11 +119,30 @@ In particular, $G(k)$ must be \textbf{pseudo random}, i.e., an efficient adversa
 \end{definition}
 
 \begin{theorem}
-    If $G$ is a pseudo random generator, then $\Pi^G$ is secure against passive attacks.
+    \label{theorem:pseudorandomgen-security}
+    If $G$ is a pseudo random generator, then $\Pi^G$ is secure against passive attacks, namely secure w.r.t. $PrivK^{eav}$.
 \end{theorem}
 
-\paragraph{Proof}
------------
+\paragraph{Proof (by reduction/contradiction)}
+Let us assume that $\exists A$ attacker which breaks $\Pi^G$ according to $PrivK^{eav}$ and out of it let us build a distinguisher which wins over $G$.
+Before defining the distinguisher $D$ let use write what we know about $A$:
+$$Pr(PrivK^{eav}_{A,\Pi^G}(n) = 1) = \frac{1}{2} + \theta(n)$$
+in which $\theta(n) \notin{} \mathcal{NGL}$.
+
+\newpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/security_of_pseudorandomgen}
+    \caption{How the deterministic D can be generated out of an attacker A.}
+\end{figure}
+\noindent
+Let us analyse the behaviour of the newly constructed $D$:
+\begin{itemize}
+    \item $Pr(D(G(r)) = 1) = Pr(PrivK^{eav}_{A,\Pi^G}(n) = 1)$ (note that $G(r)$ is exactly $w$ in the diagram explaining how $D$ is built);
+    \item $Pr(D(s) = 1) = Pr(PrivK^{eav}_{A,OTP}(n) = 1)$ (note that $s$ is a purely random string, OTP is the One-Time Pad);
+    \item $|Pr(D(G(r)) = 1) - Pr(D(s) = 1)| = |Pr(PrivK^{eav}_{A,\Pi^G}(n) = 1) - Pr(PrivK^{eav}_{A,OTP}(n) = 1)| = |(\frac{1}{2} + \theta(n)) - \frac{1}{2}| = |\theta(n)| = \theta(n)$
+\end{itemize}
+We are done: $\theta(n)$ is not negligible and this contradicts our hypothesis, hence we proved \ref{theorem:pseudorandomgen-security}.
 
 \begin{definition}[Variable Output-Length Generators]
     A deterministic polytime algorithm $G$ is said to be \textbf{Variable Output-Length Generators} if from a seed $s \in{} \{0,1\}^n$ and a string in the form $1^l$ outputs a binary string $G(s,1^l)$ of length $l$ s.t.
