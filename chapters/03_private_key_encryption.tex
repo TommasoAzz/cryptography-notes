@@ -276,4 +276,15 @@ $$|Pr(D^{F_k(\cdot),F^{-1}_k(\cdot)}(1^n)=1)-Pr(D^{f(\cdot),f{-1}(\cdot)}(1^n)=1
 which is the notion of \textbf{strongly pseudo random permutation}.\\
 \noindent
 The previously nominated \textbf{block ciphers} are also thought to be strongly pseudo random permutations.
+
+\subsubsection{Modes of operation}
+The construction $\Pi$ is just one of many ways in which a block cipher can be used to construct an encryption scheme.
+In literature, this is referred as \textbf{mode of operation}: each of these assumes the message $m$ to be split in $m_0$, ..., $m_l$, each of them of length $|k|$ (assuming also that $|m|$ is a multiple of $|k|$).
+Some modes of operations are the following:
+\begin{itemize}
+    \item \textbf{Electronic Code Book (ECB)}, which is secure for passive attackas but not CPA-secure;
+    \item \textbf{Cipher Block Chaining (CBC)}, which is unfortunately not parallelizable (since to encode the $i$-th partial message $m_i$ is required $c_{i-1}$);
+    \item \textbf{Output FeedBack (OFB)}, which is partially parallelizable ($F_k$ computation is parallelizable, the encoding is not);
+    \item \textbf{Counter (CTR)}, which is parallelizable (and C is sent in the channel with the ciphertext).
+\end{itemize}
 \end{document}
