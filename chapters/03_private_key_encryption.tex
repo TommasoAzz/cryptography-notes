@@ -188,4 +188,37 @@ Stream ciphers become useful again (right now they are useless, as we showed) wh
     \includegraphics[width=0.5\textwidth]{images/unsynchronized_mode}
     \caption{Unsynchronized mode: Stream cipher without internal state (stateless).}
 \end{figure}
+
+\section{Security against Chosen Plaintext Attacks (CPA)}
+The assumptions so far were that the attacks where only conducted in a safe manner, i.e., the attacker could not do much more than generate messages and check if they would match to a given ciphertext.
+Right now the assumption we give is that the attacker has access to an \textbf{oracle} of $Enc_k$ for some given $k$.
+The rest stays the same and the new experiment is called $PrivK^{CPA}$.
+
+\begin{definition}[Security against CPA]
+    An encryption scheme $\Pi$ is said to be secure against CPA attacks (or CPA-secure) if and only if for every adversary $A$ there exists $\epsilon \in{} \mathcal{NGL}$ such that
+    $$Pr(PrivK^{CPA}_{A,\Pi}(n) = 1) \leq{} \frac{1}{2} + \epsilon(n)\footnote{This kind of definitions usually use strict equalities instead of inequalities: it is not important whether is the former or the latter, it's important the probability is approximately $\frac{1}{2}$.}$$
+\end{definition}
+
+\begin{lemma}
+    Any scheme that is secure w.r.t. $PrivK^{CPA}$ is secure w.r.t. $PrivK^{eav}.$
+\end{lemma}
+
+\begin{lemma}
+    Any scheme $\Pi{}=(Gen, Enc, Dec)$ that is secure w.r.t. $PrivK^{CPA}$ must be such that $Enc$ is probabilistic.
+\end{lemma}
+
+\begin{theorem}
+    Every encryption scheme that is CPA-secure is secure even in case of multiple encodings.
+\end{theorem}
+
+\subsection{Constructing a CPA-secure cipher}
+Since $\Pi^G$ are pseudo random generators and are deterministic, there is no way they will ever be CPA-secure. Therefore we will need to present the concept of \textbf{pseudo random functions}.
+Some knowledge is needed before proceeding:
+\begin{itemize}
+    \item the concept of \textit{partial function} is required, i.e., functions defined in $\{0,1\}^*\times\{0,1\}^*\rightarrow\{0,1\}^*$;
+    \item we are interested in partial functions because we want these functions to be \textbf{length preserving}, i.e., $F(k,x)$ is defined $\Leftrightarrow$ $|k| = |x|$, $|F(k,x)| = |x|$.
+    \item given a length preserving function $F$ we call $F_k: \{0,1\}^{|k|} \rightarrow{} \{0,1\}^{|k|}$, where the first parameter is fixed and is $k$;
+    \item a partial function is efficient if there exists a polytime algorithm computing it.
+\end{itemize}
+
 \end{document}
