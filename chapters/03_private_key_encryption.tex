@@ -21,17 +21,17 @@
 \end{lemma}
 
 \paragraph{Proof}
-Suppose $\epsilon$ is a negligible function. Let $p: \mathbb{N} \rightarrow{} \mathbb{N}$ be any polynomial.\\
+Suppose $\varepsilon$ is a negligible function. Let $p: \mathbb{N} \rightarrow{} \mathbb{N}$ be any polynomial.\\
 We want to prove that:
-$$\epsilon'(n) = \epsilon(n)\cdot{}p(n)$$
+$$\varepsilon'(n) = \varepsilon(n)\cdot{}p(n)$$
 is itself negligible.\\
 We know that $\forall{} q: \mathbb{N} \rightarrow{} \mathbb{N}$ $\exists{} N \in{} \mathbb{N}\; s.t.\;\forall{} n > N$
-$$\epsilon(n) < \frac{1}{p(n)\cdot{}q(n)}$$
-This is because $\epsilon(n)$ is negligible and by definition is smaller than $\frac{1}{p(n)}$ and $\frac{1}{p(n)}$ hence also smaller than their product.
-Let us prove that $\epsilon'(n)$ is negligible, namely that $\forall{} q: \mathbb{N} \rightarrow{} \mathbb{N}$ $\exists{} N \in{} \mathbb{N}\; s.t.\;\forall{} n > N$
-$$\epsilon'(n) < \frac{1}{q(n)}$$
+$$\varepsilon(n) < \frac{1}{p(n)\cdot{}q(n)}$$
+This is because $\varepsilon(n)$ is negligible and by definition is smaller than $\frac{1}{p(n)}$ and $\frac{1}{p(n)}$ hence also smaller than their product.
+Let us prove that $\varepsilon'(n)$ is negligible, namely that $\forall{} q: \mathbb{N} \rightarrow{} \mathbb{N}$ $\exists{} N \in{} \mathbb{N}\; s.t.\;\forall{} n > N$
+$$\varepsilon'(n) < \frac{1}{q(n)}$$
 To conclude, we know that:
-$$\epsilon'(n) = \epsilon(n) \cdot{} p(n) < \frac{1}{q(n)\cdot{}p(n)} \cdot{} p(n)$$
+$$\varepsilon'(n) = \varepsilon(n) \cdot{} p(n) < \frac{1}{q(n)\cdot{}p(n)} \cdot{} p(n)$$
 and therefore \ref{lemma:closure-ngl-functions} is proved.
 
 \section{Proofs by reduction}
@@ -57,13 +57,13 @@ $$\exists{} A \in{} PPT \; BRK(\Pi, A) \Rightarrow{} \exists{} B \in{} PPT \; BR
 \paragraph{Proof (by means of contradiction)}
 Assuming that $\Xi$ is not solvable by efficient (PPT) algorithms, a part from those with negligible probability, we want therefore to prove that $\Pi$ is secure ($\forall{} B \in{} PPT \; \neg BRK(\Xi, B) \Rightarrow{} \forall{} A \in{} PPT \; \neg BRK(\Pi, A)$).\\
 \begin{enumerate}
-    \item Let's say that it exists $A \in PPT$, an efficient algorithm for solving $\Pi$ and that the probability of solving it is $\epsilon(n)$ (which is a polynomial function).
+    \item Let's say that it exists $A \in PPT$, an efficient algorithm for solving $\Pi$ and that the probability of solving it is $\varepsilon(n)$ (which is a polynomial function).
     \item Now let's take $B \in{} PPT$, which is an efficient algorithm for solving $\Xi$, that uses $A$ as a subroutine internally without knowing how it works.
     It just knows how the inputs map to outputs. Given an instance $\xi$ of $\Xi$, $B$ simulates $\Pi$ for $A$; $A$ must not see any difference (inputs and outputs given to $A$ should respect the pre- and post-conditions of $\Pi$).
     If $A$ breaks $\Pi$ then $B$ should be able to solve $\Xi$ with instance $\xi$ with probability \textbf{at least} $\frac{1}{p(n)}$ (inverse polynomial).
-    \item If $\epsilon(n)$ is not negligible (which is not, because of assumptions made in step 1), then $B$ solves $\Xi$ with probability $\frac{\epsilon(n)}{p(n)}$ which is not negligible (hence polynomial/efficient).
+    \item If $\varepsilon(n)$ is not negligible (which is not, because of assumptions made in step 1), then $B$ solves $\Xi$ with probability $\frac{\varepsilon(n)}{p(n)}$ which is not negligible (hence polynomial/efficient).
     Since $B$ is efficient, and we know that $A$ is efficient too, we showed that $B$ can solve $\Xi$ with non-negligible probability. Which is impossible because it violates the initial assumptions.
-    \item To conclude, given the assumption on $\Xi$, no efficient algorithm $A$ can solve $\Pi$ with non-negligible probability $\epsilon(n)$ and $\Pi$ is computationally secure. 
+    \item To conclude, given the assumption on $\Xi$, no efficient algorithm $A$ can solve $\Pi$ with non-negligible probability $\varepsilon(n)$ and $\Pi$ is computationally secure. 
 \end{enumerate}
 
 \section{New definition of encryption scheme}
@@ -87,10 +87,10 @@ $b^* \; \leftarrow{} \; A(c)$\\
 \textbf{Result}: $\neg(b \oplus{} b^*)$
 \begin{definition}[Security of an encryption scheme]
     An encryption scheme $\Pi$ is said to be \textit{secure against passive attacks} (i.e., when the attacker does not know the $Enc$ and $Dec$ functions) or \textit{secure w.r.t.} $PrivK^{eav}$
-    if and only if for each PPT adversary $A$ there exists a function $\epsilon{} \in{} \mathcal{NGL}$ s.t.
-    $$Pr(PrivK^{eav}_{A,\Pi}(n) = 1) = \frac{1}{2} + \epsilon(n)$$
+    if and only if for each PPT adversary $A$ there exists a function $\varepsilon{} \in{} \mathcal{NGL}$ s.t.
+    $$Pr(PrivK^{eav}_{A,\Pi}(n) = 1) = \frac{1}{2} + \varepsilon(n)$$
 \end{definition}
-As a note, $\frac{1}{2}$ corresponds to the probability we required also in the previous experiment. We are now adding only a negligible probability $\epsilon(n)$.
+As a note, $\frac{1}{2}$ corresponds to the probability we required also in the previous experiment. We are now adding only a negligible probability $\varepsilon(n)$.
 
 \section{Pseudo randomness}
 Since we cannot require anymore that $|\mathcal{M}| = |\mathcal{K}|$ and only that $|\mathcal{K}| < |\mathcal{M}|$ we must find a way to make the generated $k$ become of length $|m|$.
@@ -103,7 +103,7 @@ In particular, $G(k)$ must be \textbf{pseudo random}, i.e., an efficient adversa
     \begin{itemize}
         \item $\forall{}n \in{} \mathbb{N}$ it holds that $l(n) > n$ (i.e., $l$ cannot be the identity function like in the OTP).
         \item $G$ is polytime.
-        \item For every PPT algorithm $D$ ($D$ stands for ``distinguisher") there exists $\epsilon{} \in{} \mathcal{NGL}$ s.t. $|Pr(D(s) = 1) - Pr(D(G(r)) = 1)| \le{} \epsilon(n)$ where $s$ and $r$ are (true) random strings; $s$ has length $l(n)$, $r$ has length $n$ and therefore $|G(r)|=l(n)$ (i.e., algorithm $D$ can understand that $G$ is not returning proper random strings only with negligible probability).
+        \item For every PPT algorithm $D$ ($D$ stands for ``distinguisher") there exists $\varepsilon{} \in{} \mathcal{NGL}$ s.t. $|Pr(D(s) = 1) - Pr(D(G(r)) = 1)| \le{} \varepsilon(n)$ where $s$ and $r$ are (true) random strings; $s$ has length $l(n)$, $r$ has length $n$ and therefore $|G(r)|=l(n)$ (i.e., algorithm $D$ can understand that $G$ is not returning proper random strings only with negligible probability).
     \end{itemize}
 \end{definition}
 
@@ -195,8 +195,8 @@ Right now the assumption we give is that the attacker has access to an \textbf{o
 The rest stays the same and the new experiment is called $PrivK^{CPA}$.
 
 \begin{definition}[Security against CPA]
-    An encryption scheme $\Pi$ is said to be secure against CPA attacks (or CPA-secure) if and only if for every adversary $A$ there exists $\epsilon \in{} \mathcal{NGL}$ such that
-    $$Pr(PrivK^{CPA}_{A,\Pi}(n) = 1) \leq{} \frac{1}{2} + \epsilon(n)\footnote{This kind of definitions usually use strict equalities instead of inequalities: it is not important whether is the former or the latter, it's important the probability is approximately $\frac{1}{2}$.}$$
+    An encryption scheme $\Pi$ is said to be secure against CPA attacks (or CPA-secure) if and only if for every adversary $A$ there exists $\varepsilon \in{} \mathcal{NGL}$ such that
+    $$Pr(PrivK^{CPA}_{A,\Pi}(n) = 1) \leq{} \frac{1}{2} + \varepsilon(n)\footnote{This kind of definitions usually use strict equalities instead of inequalities: it is not important whether is the former or the latter, it's important the probability is approximately $\frac{1}{2}$.}$$
 \end{definition}
 
 \begin{lemma}
@@ -233,8 +233,8 @@ The space of these functions mapping $\{0,1\}^n \rightarrow{} \{0,1\}^n$ is huge
 \begin{definition}
     Given a binary partial function $F$, which is length preserving and efficiently computable, 
     we say that $F$ is a pseudo random function (FP) if and only if for every PPT distinguisher $D$ 
-    there exists a negligible function $\epsilon$ such that
-    $$|Pr(D^{F_k(\cdot)}(1^n)=1)-Pr(D^{f(\cdot)}(1^n)=1)|\le{}\epsilon(n)$$
+    there exists a negligible function $\varepsilon$ such that
+    $$|Pr(D^{F_k(\cdot)}(1^n)=1)-Pr(D^{f(\cdot)}(1^n)=1)|\le{}\varepsilon(n)$$
     where $k$ is chosen among all strings of length $n$ and $f(\cdot)$ (truly random function) is chosen among all functions in $\{0,1\}^n \rightarrow{} \{0,1\}^n$.
 \end{definition}
 
@@ -272,7 +272,7 @@ Therefore $Enc(m,k)$ depends on the generated value of $r$, which means that dif
 A permutation of a set $X$ is a just a bijective (i.e., invertible) function $F: X \rightarrow{} X$.
 The number of possible permutations is big ($(2^n)!$), but smaller than the space of functions (which was $2^{2^n \cdot{} n}$).
 Both $F$ and $F^{-1}$ are required to be efficiently computable and since sometimes the adversaries have access to both of them, it makes sense to require the following:
-$$|Pr(D^{F_k(\cdot),F^{-1}_k(\cdot)}(1^n)=1)-Pr(D^{f(\cdot),f{-1}(\cdot)}(1^n)=1)| \le{} \epsilon(n)$$
+$$|Pr(D^{F_k(\cdot),F^{-1}_k(\cdot)}(1^n)=1)-Pr(D^{f(\cdot),f{-1}(\cdot)}(1^n)=1)| \le{} \varepsilon(n)$$
 which is the notion of \textbf{strongly pseudo random permutation}.\\
 \noindent
 The previously nominated \textbf{block ciphers} are also thought to be strongly pseudo random permutations.
