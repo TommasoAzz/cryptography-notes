@@ -110,7 +110,7 @@ In particular, $G(k)$ must be \textbf{pseudo random}, i.e., an efficient adversa
 \begin{definition}[GP Induced Scheme]
     Given a GP $G$ with expansion factor $l$, the scheme $\Pi^G = (Gen,Enc,Dec)$ is defined as follows:
     \begin{itemize}
-        \item The algorithm $Gen$ on input $1^n$ outputs each string of length $n$ with same probability, i.e., $\frac{1}{2n}$.
+        \item The algorithm $Gen$ on input $1^n$ outputs each string of length $n$ with same probability, i.e., $\frac{1}{2^n}$.
         \item $Enc(m,k)=G(k)\oplus{}m$.
         \item $Dec(c,k)=G(k)\oplus{}c$.
         \item $\Pi^G$ produces messages with fixed length $l(n)$.
@@ -212,7 +212,10 @@ The rest stays the same and the new experiment is called $PrivK^{CPA}$.
 \end{theorem}
 
 \subsection{Constructing a CPA-secure cipher}
-Since $\Pi^G$ are pseudo random generators and are deterministic, there is no way they will ever be CPA-secure. Therefore we will need to present the concept of \textbf{pseudo random functions}.
+
+\subsubsection{Pseudo random functions}
+Since $\Pi^G$ are pseudo random generators and are deterministic, there is no way they will ever be CPA-secure.
+Therefore we will need to present the concept of \textbf{pseudo random functions}.
 Some knowledge is needed before proceeding:
 \begin{itemize}
     \item the concept of \textit{partial function} is required, i.e., functions defined in $\{0,1\}^*\times\{0,1\}^*\rightarrow\{0,1\}^*$;
@@ -220,5 +223,57 @@ Some knowledge is needed before proceeding:
     \item given a length preserving function $F$ we call $F_k: \{0,1\}^{|k|} \rightarrow{} \{0,1\}^{|k|}$, where the first parameter is fixed and is $k$;
     \item a partial function is efficient if there exists a polytime algorithm computing it.
 \end{itemize}
+The space of these functions mapping $\{0,1\}^n \rightarrow{} \{0,1\}^n$ is huge but still finite:
+\begin{itemize}
+    \item every function has at most $2^n$ inputs and outputs string $n$-bit long, which creates a $(2^n \cdot{} n)$-sized table;
+    \item like with binary strings, in which with $x$ bits we can express at most $2^x$ strings; in this space of functions, with $(2^n \cdot{} n)$ bits we can express a space of the following size: $2^{2^n \cdot{} n}$;
+    \item every function can be chosen uniformly randomly: $\frac{1}{2^{2^n \cdot{} n}}$.
+\end{itemize}
 
+\begin{definition}
+    Given a binary partial function $F$, which is length preserving and efficiently computable, 
+    we say that $F$ is a pseudo random function (FP) if and only if for every PPT distinguisher $D$ 
+    there exists a negligible function $\epsilon$ such that
+    $$|Pr(D^{F_k(\cdot)}(1^n)=1)-Pr(D^{f(\cdot)}(1^n)=1)|\le{}\epsilon(n)$$
+    where $k$ is chosen among all strings of length $n$ and $f(\cdot)$ (truly random function) is chosen among all functions in $\{0,1\}^n \rightarrow{} \{0,1\}^n$.
+\end{definition}
+
+\noindent
+By the way, as with pseudo random functions are not proved to exist like with pseudo random generators.
+There are constructions that are meant to satisfy axioms of pseudo random functions, but again, they are not proved; these are the so-called \textbf{block ciphers} (e.g., DES or AES).
+
+\begin{definition}[FP Induced Scheme]
+    Given a FP $F$, the scheme $\Pi^F = (Gen,Enc,Dec)$ is defined as follows:
+    \begin{itemize}
+        \item The algorithm $Gen$ on input $1^n$ outputs each string of length $n$ with same probability, i.e., $\frac{1}{2^n}$.
+        \item $Enc(m,k)$ is defined as the (binary encoding of the) pair $\langle r, F_k(r)\oplus m \rangle$ where $r$ is a truly random bit string with length $k$.
+        \item $Dec(c,k)$ returns $F_k(r)\oplus s$ anytime $c$ is the (binary encoding of the) pair $\langle r, s \rangle$.
+        \item Correctness is easy to prove: $Dec(Enc(m,k),k)=F_k(r)\oplus(F_k(r)\oplus m)=m$ (given a truly random generated $r$).
+    \end{itemize}
+    $F_k$ is length preserving and can only be applied to messages of length equal to the value returned by $F_k$.
+    There are ways to generalize this scheme, shown below.
+\end{definition}
+Therefore $Enc(m,k)$ depends on the generated value of $r$, which means that different invocations of $Enc$ return different results.
+
+\begin{theorem}
+    If $F$ is FP, then $\Pi^F$ is secure against CPA attacks.
+\end{theorem}
+
+\begin{definition}[FP Induced Scheme handling variable-length messages]
+    Given a CPA-secure cipher $\Pi$ for messages of length $n$, a generalization for messages of length $l(n)$ (where $l$ is a polynomial on $n$) is obtained but slightly modifying $Enc$ (and of course $Dec$ follows):
+    $$Enc^*(k, m_0 || ... || m_{l(n)}) = Enc(k,m_0) || ... || Enc(k,m_{l(n)})$$
+\end{definition}
+
+\begin{theorem}
+    If $\Pi$ is CPA-secure, then $\Pi^*$ is also CPA-secure.
+\end{theorem}
+
+\subsubsection{Pseudo random permutations}
+A permutation of a set $X$ is a just a bijective (i.e., invertible) function $F: X \rightarrow{} X$.
+The number of possible permutations is big ($(2^n)!$), but smaller than the space of functions (which was $2^{2^n \cdot{} n}$).
+Both $F$ and $F^{-1}$ are required to be efficiently computable and since sometimes the adversaries have access to both of them, it makes sense to require the following:
+$$|Pr(D^{F_k(\cdot),F^{-1}_k(\cdot)}(1^n)=1)-Pr(D^{f(\cdot),f{-1}(\cdot)}(1^n)=1)| \le{} \epsilon(n)$$
+which is the notion of \textbf{strongly pseudo random permutation}.\\
+\noindent
+The previously nominated \textbf{block ciphers} are also thought to be strongly pseudo random permutations.
 \end{document}
