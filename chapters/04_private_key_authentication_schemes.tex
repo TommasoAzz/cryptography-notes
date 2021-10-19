@@ -10,9 +10,9 @@
     \includegraphics[width=0.5\textwidth]{images/difference_secrecy_authentication}
     \caption{Difference between secrecy and authentication.}
 \end{figure}
-
-In secrecy schemes, the channel is secure and the focus of the adversary is reading what goes through the channel. 
-In authentication schemes, the channel is not secure and the focus of the adversary is not to read the content of the channel, but to write on it.
+\noindent
+In \textbf{secrecy schemes}, the channel is secure and the focus of the adversary is reading what goes through the channel. 
+In \textbf{authentication schemes}, the channel is not secure and the focus of the adversary is not to read the content of the channel, but to write on it.
 That is why the receiver wants to be sure that the message sent along the channel is actually coming from the expected sender.
 For that we need a \textbf{Message Authentication Code (MAC)}.\\
 \noindent
@@ -26,9 +26,9 @@ The same way ciphers guarantee secrecy, \textbf{Message Authentication Codes (MA
     \begin{itemize}
         \item $Gen$ takes as input a string in the form $1^n$ (the security parameter) and outputs a key $k$ which can be such that $|k|\ge n$.
         \item $Mac$ takes as input a key $k$ and a message $m$ and outputs a \textbf{tag} $t$.
-        \item $Vrfy$ takes as input a key $k$, a message $m$ and a tag $t$, and outputs a boolean $b$.
+        \item $Vrfy$ takes as input a key $k$, a message $m$ and a tag $t$, and outputs a boolean $b$ (i.e., $b \in{} \{0,1\}$).
     \end{itemize}
-    A MAC $\Pi = (Gen, Mac, Vrfy)$ is \textit{correct} when $Vrfy(k, m, Mac(k, m)) = true$.
+    A MAC $\Pi = (Gen, Mac, Vrfy)$ is \textit{correct} when $Vrfy(k, m, Mac(k, m)) = 1$.
 \end{definition}
 
 \noindent
@@ -44,12 +44,12 @@ In order to be safe and sound, the assumptions are very pessimistic:
 Let us present the new experiment:\\
 $MacForge_{A,\Pi}(n):$\\
 $k \leftarrow{} Gen(1^n)$\\
-$(m,t) \leftarrow{} A(1^n,Mac_k(\cdot))$\\
-$\mathbb{Q} \leftarrow{} \{m \; | \; A$ queries $Mac_k(\cdot)$ on $m\}$\\
-\textbf{Result:} ($m \notin{\mathbb{Q}} \wedge{} Vrfy(k,m,t) = true$)
+$(m,t) \leftarrow{} A(1^n,Mac_k(\cdot))$ // Invoked once.\\
+$\mathbb{Q} \leftarrow{} \{m \; | \; A$ queries $Mac_k(\cdot)$ on $m\}$ // Set of queries already performed by MacForge.\\
+\textbf{Result:} ($m \notin{\mathbb{Q}} \wedge{} Vrfy(k,m,t) = 1$) // $m$ must be new and $Vrfy$ must succeed.
 
 \begin{definition}
-    A MAC $\Pi$ is secure if and only if for every adversary PPT $A$ there exists a function $\varepsilon{} \in{} \mathcal{NGL}$ such that:
+    A MAC $\Pi$ is secure if and only if for every PPT adversary $A$ there exists a function $\varepsilon{} \in{} \mathcal{NGL}$ such that:
     $$Pr(MacForge_{\Pi,A}(n) = 1) = \varepsilon(n)$$
 \end{definition}
 \end{document}
