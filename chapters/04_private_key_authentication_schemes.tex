@@ -52,4 +52,110 @@ $\mathbb{Q} \leftarrow{} \{m \; | \; A$ queries $Mac_k(\cdot)$ on $m\}$ // Set o
     A MAC $\Pi$ is secure if and only if for every PPT adversary $A$ there exists a function $\varepsilon{} \in{} \mathcal{NGL}$ such that:
     $$Pr(MacForge_{\Pi,A}(n) = 1) = \varepsilon(n)$$
 \end{definition}
+%----------------------------------------------------------------------------------
+\subsection{Constructing a secure MAC}
+\begin{definition}[FP induced MAC]
+    Given an FP $F$, the MAC $\Pi{}^F = (Gen, Mac, Vrfy)$ is defined as follows:
+    \begin{itemize}
+        \item The algorithm $Gen$ for input $1^n$ outputs every string long $n$ with same probability, i.e. $\frac{1}{2^n}$.
+        \item $Mac(k,m) = F_k(m)$.
+        \item $Vrfy(k,m,t) = (F_k(m)\stackrel{?}{=}t)$.
+    \end{itemize}
+\end{definition}
+
+\begin{theorem}
+    If $F$ is pseudorandom, then the MAC $\Pi{}^F$ is secure.
+\end{theorem}
+%----------------------------------------------------------------------------------
+\subsubsection{Handling Variable-Length messages}
+$Mac^{*}(k, m)$:\\
+$m_1 \mid\mid{} \ldots{} \mid\mid{} m_d \; \leftarrow{} \; m$\\
+\textbf{//such that $\mid{} m_i \mid{} = \frac{n}{4}$}\\
+$\ell{} \; \leftarrow{} \; \mid{} m \mid{}$\\
+$r \; \leftarrow{} \; \{0, 1\}^{\frac{n}{4}}$\\
+$\textbf{for} \; i \; \leftarrow{} \; 1 \; \textbf{to} \; d \; \textbf{do}$\\
+$\quad{}\quad{} t_i \; \leftarrow{} \;$\\
+$\quad{}\quad{}\quad{} Mac(k, r\mid\mid{}\ell\mid\mid{}i\mid\mid{}m_1)$\\
+\textbf{Result}: $(r, t_1, \ldots{},t_d)$
+\newline
+\newline
+$Vrfy^{*}(k, m, (r, t_1, \ldots{}, t_d))$:\\
+$m_1 \mid\mid{} \ldots{} \mid\mid{} m_d \; \leftarrow{} \; m$\\
+\textbf{//such that $\mid{} m_i \mid{} = \frac{n}{4}$}\\
+$\ell{} \; \leftarrow{} \; \mid{} m \mid{}$\\
+$\textbf{for} \; i \; \leftarrow{} \; 1 \; \textbf{to} \; d \; \textbf{do}$\\
+$\quad{}\quad{} \textbf{if}$\\
+$\quad{}\quad{}\quad{} Vrfy(k, r\mid\mid{}\ell\mid\mid{}i\mid\mid{}m_1) = $\\
+$\quad{}\quad{}\quad{} 0 \; \textbf{then}$\\
+$\quad{}\quad{}\quad{}\quad{}$ \textbf{Result}: 0\\
+\textbf{Result}: 1
+
+\begin{theorem}
+    If $\Pi{}$ is secure, then $\Pi{}^*$ is also secure.
+\end{theorem}
+%----------------------------------------------------------------------------------
+\subsubsection{CBC-MAC construction}
+$Mac^{CBC}(k, m)$:\\
+$\ell{} \; \leftarrow{} \; \ell{}(\mid{} k \mid)$\\
+$m_1 \mid\mid{} \ldots{} \mid\mid{} m_{\ell} \; \leftarrow{} \; m$\\
+\textbf{//such that $\mid{} m_i \mid{} = \; \mid{}k\mid{}$}\\
+$t_0 \; \leftarrow{} \; 0^n$
+$\ell{} \; \leftarrow{} \; \mid{} m \mid{}$\\
+$\textbf{for} \; i \; \leftarrow{} \; 1 \; \textbf{to} \; \ell{} \; \textbf{do}$\\
+$\quad{}\quad{} t_i \; \leftarrow{} \; F_k(t_{i-1} \oplus{} m_i)$\\
+\textbf{Result}: $t_{\ell}$
+\newline
+\newline
+$Vrfy^{*}(k, m, t)$:\\
+\textbf{if} $\ell{}(\mid k \mid) \cdot{} \mid{} k \mid{} \neq{} \mid{} m \mid{}$ \textbf{then}\\
+$\quad{}\quad{} \textbf{Result}: 0$\\
+$\textbf{Result}: t \stackrel{?}{=} MAC^{CBC}(k, m)$\\
+
+\begin{theorem}
+    If $\ell{}$ is a polynomial and $F$ is $FP$, then $\Pi{}^{CBC}$ is a secure MAC.
+\end{theorem}
+%----------------------------------------------------------------------------------
+\section{Hash functions}
+\begin{definition}
+    A hash function is a pair of PPT algorithms $(Gen, H)$ such that:
+    \begin{itemize}
+        \item Gen is an algorithm that takes as input a security parameter $1^n$ and return a key $s$ (from which $n$ can be efficiently calculated).
+        \item There exists a polynomial $\ell{}$ such that $H(s, x)$ returns a string of length $\ell{}(n)$ (where $n$ is implicit parameter in $s$)
+    \end{itemize}
+\end{definition}
+%----------------------------------------------------------------------------------
+\subsection{Collision-Resistant hash functions}
+$HashCol_{\mathcal{A}, \Pi{}}(n):$\\
+$s \; \leftarrow{} \; Gen(1^n)$\\
+$(x, y) \; \leftarrow{} \; A(s)$\\
+\textbf{Result}: $(x \neq{} y) \wedge{} (H(x) = H(y))$
+
+\begin{definition}
+    A hash function $\Pi{} = (Gen, H)$ is collision-resistant if and only if for every adversary PPT $A$ there exists a negligible function $\varepsilon{}$ such that $$Pr(HashColl_{\mathcal{A}, \Pi{}}(n)=1) \leq{} \varepsilon{}(n)$$
+\end{definition}
+%----------------------------------------------------------------------------------
+\subsubsection{Birthday attacks}
+\begin{theorem}[Birthday theorem]
+    Given $q$ uniformly chosen random values in a finite set of cardinality $N$, the probability that two of them are identical is $\frac{q^2}{N}$.
+\end{theorem}
+%----------------------------------------------------------------------------------
+\subsubsection{The Merkle-Damg\r{a}rd transform}
+$H^{MD}(s, x):$\\
+$B \; \leftarrow{} \; \lceil{} \frac{\mid{}x\mid{}}{n} \rceil{}$\\
+$x_1 \mid\mid{} x_B \; \leftarrow{} \; x$\\
+\textbf{//such that $\mid{} x_i \mid{} = n$}\\
+$x_{B+1} \; \leftarrow{} \; \mid{} x \mid{}$\\
+$z_0 \; \leftarrow{} \; 0^n$\\
+$\textbf{for} \; i \; \leftarrow{} \; 1 \; \textbf{to} \; B+1 \; \textbf{do}$\\
+$\quad{}\quad{} z_i \; \leftarrow{} \; H(s, z_i - 1, \mid\mid{} x_i)$
+\textbf{Result}: $z_{B+1}$
+
+\begin{theorem}
+    If $(Gen, H)$ is collision-resistant, then so is $(Gen, H^{MD})$.
+\end{theorem}
+%----------------------------------------------------------------------------------
+\subsubsection{Hash-and-Mac}
+\begin{theorem}
+    If $\Pi{}$ is a secure MAC and $(Gen', H)$ is collision-resistant, then $\Pi{}^H$ is secure. 
+\end{theorem}
 \end{document}
