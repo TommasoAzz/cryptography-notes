@@ -59,7 +59,7 @@ $\mathbb{Q} \leftarrow{} \{m \; | \; A$ queries $Mac_k(\cdot)$ on $m\}$ // Set o
     \begin{itemize}
         \item The algorithm $Gen$ for input $1^n$ outputs every string long $n$ with same probability, i.e. $\frac{1}{2^n}$.
         \item $Mac(k,m) = F_k(m)$.
-        \item $Vrfy(k,m,t) = (F_k(m)\stackrel{?}{=}t)$.
+        \item $Vrfy(k,m,t) = (F_k(m)\stackrel{?}{=}t)$ (it is $1$ (true) if and only if $F_k(m)$ equals $t$).
     \end{itemize}
 \end{definition}
 
@@ -139,7 +139,7 @@ $(x, y) \; \leftarrow{} \; A(s)$\\
     Given $q$ uniformly chosen random values in a finite set of cardinality $N$, the probability that two of them are identical is $\frac{q^2}{N}$.
 \end{theorem}
 %----------------------------------------------------------------------------------
-\subsubsection{The Merkle-Damg\r{a}rd transform}
+\subsubsection{The Merkle-Damgård transform}
 $H^{MD}(s, x):$\\
 $B \; \leftarrow{} \; \lceil{} \frac{\mid{}x\mid{}}{n} \rceil{}$\\
 $x_1 \mid\mid{} x_B \; \leftarrow{} \; x$\\
