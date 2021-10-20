@@ -1,4 +1,4 @@
-\documentclass[../main]{subfiles}
++\documentclass[../main]{subfiles}
 \begin{document}
 
 \chapter{Private key encryption}
@@ -43,7 +43,7 @@ In the context of computational cryptography we have $|\mathcal{K}| \ll{} |\math
 \end{itemize}
 The probability of success of the attacker must be minimized, together with its computational power.
 We would have to prove the following:
-$$\forall{} A \in{} PPT \; \neg BRK(\Pi, A) \Leftrightarrow{} \nexists{} A \in{} PPT \; \neg BRK(\Pi, A)$$
+$$\forall{} A \in{} PPT. \; \neg BRK(\Pi, A) \Leftrightarrow{} \nexists{} A \in{} PPT. \;  BRK(\Pi, A)$$
 in which $BRK(\Pi, A)$ means ``Algorithm/attacker A breaks scheme $\Pi$'', but that is currently impossible to prove.\\
 The only thing we can prove right now is the following:
 $$\forall{} B \in{} PPT \; \neg BRK(\Xi, B) \Rightarrow{} \forall{} A \in{} PPT \; \neg BRK(\Pi, A)$$
@@ -171,7 +171,7 @@ These so-called \textit{stream ciphers} are designed to satisfy axioms of Variab
 \paragraph{Proof}
 Let us describe an adversary $A$ which wins with high probability against any such scheme:
 \begin{itemize}
-    \item in the first phase, $A$ produces in output the two vectors (for example) $m_0 = (0^l, 0^l)$ and $m_0 = (0^l, 1^l)$;
+    \item in the first phase, $A$ produces in output the two vectors (for example) $m_0 = (0^l, 0^l)$ and $m_1 = (0^l, 1^l)$;
     \item in the second phase, $A$ receives in input $c = (c_1, c_2)$, it compares $c_1$ and $c_2$ and produces in output $0$ if $c_1 = c_2$, $1$ otherwise;
     \item it is easy to see that $Pr(PrivK^{mult}_{A,\Pi}(n) = 1) = 1$ because $c_1 = c_2 \; \Leftrightarrow{} \; c = Enc(k,m_0)$ ($Enc$ is deterministic).
 \end{itemize}
@@ -254,21 +254,21 @@ The space of these functions mapping $\{0,1\}^n \rightarrow{} \{0,1\}^n$ is huge
 \end{definition}
 
 \noindent
-By the way, as with pseudo random functions are not proved to exist like with pseudo random generators.
+By the way,  with pseudo random functions are not proved to exist like pseudo random generators.
 There are constructions that are meant to satisfy axioms of pseudo random functions, but again, they are not proved; these are the so-called \textbf{block ciphers} (e.g., DES or AES).
 
 \begin{definition}[FP Induced Scheme]
     Given a FP $F$, the scheme $\Pi^F = (Gen,Enc,Dec)$ is defined as follows:
     \begin{itemize}
         \item The algorithm $Gen$ on input $1^n$ outputs each string of length $n$ with same probability, i.e., $\frac{1}{2^n}$.
-        \item $Enc(m,k)$ is defined as the (binary encoding of the) pair $\langle r, F_k(r)\oplus m \rangle$ where $r$ is a truly random bit string with length $k$.
+        \item $Enc(m,k)$ is defined as the (binary encoding of the) pair $\langle r, F_k(r)\oplus m \rangle$ where $r$ is a truly random binary string with length $k$. Let's call $s$ the result of $ F_k(r)\oplus m $. $Enc(m,k)$ depends on the generated value of $r$, which means that different invocations of $Enc$ return different results.
         \item $Dec(c,k)$ returns $F_k(r)\oplus s$ anytime $c$ is the (binary encoding of the) pair $\langle r, s \rangle$.
         \item Correctness is easy to prove: $Dec(Enc(m,k),k)=F_k(r)\oplus(F_k(r)\oplus m)=m$ (given a truly random generated $r$).
     \end{itemize}
     $F_k$ is length preserving and can only be applied to messages of length equal to the value returned by $F_k$.
     There are ways to generalize this scheme, shown below.
 \end{definition}
-Therefore $Enc(m,k)$ depends on the generated value of $r$, which means that different invocations of $Enc$ return different results.
+
 
 \begin{theorem}
 	\label{theorem:fp-cpa-secure}
