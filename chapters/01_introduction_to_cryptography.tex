@@ -25,7 +25,7 @@ The adversary knows how the encryption scheme is defined but we are interesting 
     \item \textit{Ciphertext-only attack}, the adversary $A$ knows only a certain number of cryptograms $c_1, \dotsc, c_m$ so he interferes with the communication in a passive way.
     \item \textit{Known-Plaintext Attack}, the adversary $A$ knows a certain number of pairs $(m_1, c_1), \dotsc{},(m_k, c_k)$, where $c_i$ is the cryptogram corresponding to $m_i$, it is a passive attack.
     \item \textit{Chosen-Plaintext Attack}, the adversary $A$ begins to play an active role, he can compute $Enc_k(m) = Enc(m, k)$ for messages of his own choice.
-    \item \textit{Chosen-Ciphertext Attack}, the adversary $A$ participates in an even more active way in the communication, having access to an “oracle” $Deck(\cdot{})$ for decryption but obviously without having access to k.
+    \item \textit{Chosen-Ciphertext Attack}, the adversary $A$ participates in an even more active way in the communication, having access to an “oracle” $Dec_k(\cdot{})$ for decryption but obviously without having access to $k$.
 \end{itemize}
 
 \end{document}
