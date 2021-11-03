@@ -1,0 +1,50 @@
+\documentclass[../main]{subfiles}
+\begin{document}
+
+\chapter{Theoretical Constructions of Pseudorandom Objects
+and Hash Functions}
+
+$Invert_{A, f}(n)$:\\
+$x \; \leftarrow{} \; \{0, 1\}^n$\\
+$y\; \leftarrow{} \; f(x)$\\
+$z \; \leftarrow{} \; A(1^n, y)$\\
+\textbf{Result}: $(f(z)=y)$
+
+
+\begin{definition}[One-way function]
+    A function $f:\{0, 1\}^* \rightarrow \{0, 1\}^*$ is a \textbf{one-way function} if and only if there exists a polytime and deterministic algorithm which computes f and furthermore for every PPT A there exists a negligible $\varepsilon$ such that
+    $$Pr(Invert_{A, f}(n)=1) \leq \varepsilon(n)$$
+\end{definition}
+
+\begin{definition}[Hard-core predicate]
+    A predicate $hc:\{0, 1\}^* \rightarrow \{0, 1\}$ is called \textbf{hard-core predicate} of a function f if and only if hc is polynomial time computable and for every adversary PPT A it holds that
+    $$Pr(A(f(x))=hc(x)) \leq \frac{1}{2} + \varepsilon(n) $$
+    where $\varepsilon$ is negligible.
+\end{definition}
+
+\begin{theorem}[Goldreich-Levin]
+    If there is a one-way function (respectively, a one-way permutation) f, then there exists a one-way function (respectively a one-way permutation) h and a hard-core predicate hc for g.
+\end{theorem}
+
+\begin{theorem}[One-way permutations to Pseudorandom Generators]
+    Let f be a one-way permutation and let hc be a hard-core predicate for f.
+    Then G defined by $G(s) = (f(s), hc(s))$ is a pseudorandom generator with expansion factor $\ell(n) = n+1$.
+\end{theorem}
+
+\begin{theorem}[Arbitrary expansion factor]
+    If there exists a pseudorandom generator G with expansion factor $\ell(n) = n+1$, then there exists another other pseudorandom generator H, with an arbitrary expansion factor, as long as it is polynomial.
+\end{theorem}
+
+\begin{theorem}[Generators to functions]
+    If there exists a pseudorandom generator G with expansion factor $\ell(n)=2n$, then there exists a pseudorandom function.
+\end{theorem}
+
+\begin{theorem}
+    If a pseudorandom function exists, then there exists a strong pseudorandom permutation.
+\end{theorem}
+
+\begin{theorem}
+    If there is a pseudorandom generator, then there is a one-way function.
+\end{theorem}
+
+\end{document}
