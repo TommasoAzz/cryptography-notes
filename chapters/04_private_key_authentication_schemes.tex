@@ -44,9 +44,11 @@ In order to be safe and sound, the assumptions are very pessimistic:
 Let us present the new experiment:\\
 $MacForge_{A,\Pi}(n):$\\
 $k \leftarrow{} Gen(1^n)$\\
-$(m,t) \leftarrow{} A(1^n,Mac_k(\cdot))$ // Invoked once.\\
-$\mathbb{Q} \leftarrow{} \{m \; | \; A$ queries $Mac_k(\cdot)$ on $m\}$ // Set of queries already performed by MacForge.\\
-\textbf{Result:} ($m \notin{\mathbb{Q}} \wedge{} Vrfy(k,m,t) = 1$) // $m$ must be new and $Vrfy$ must succeed.
+\begin{align*}
+(m,t) \leftarrow{} A(1^n,Mac_k(\cdot)) & & \text{// Invoked once.}\\
+\mathbb{Q} \leftarrow{} \{m \; | \; A \text{ queries } Mac_k(\cdot) \text{ on } m\} & & \text{// Set of queries already performed by MacForge.}\\
+\textbf{Result:} (m \notin{\mathbb{Q}} \wedge{} Vrfy(k,m,t) = 1) & & \text{// $m$ must be new and $Vrfy$ must succeed.}
+\end{align*}
 
 \begin{definition}
     A MAC $\Pi$ is secure if and only if for every PPT adversary $A$ there exists a function $\varepsilon{} \in{} \mathcal{NGL}$ such that:
@@ -66,12 +68,28 @@ $\mathbb{Q} \leftarrow{} \{m \; | \; A$ queries $Mac_k(\cdot)$ on $m\}$ // Set o
 \begin{theorem}
     If $F$ is pseudorandom, then the MAC $\Pi{}^F$ is secure.
 \end{theorem}
+
+\paragraph{Proof}
+Let's start by introducing an auxiliary MAC $\Tilde{\Pi}$ as follows:
+\begin{itemize}
+    \item $\Tilde{Gen}$ on input $1^n$ does not generate a key but a random function $f: \{0,1\}^n \rightarrow{} \{0,1\}^n$;
+    \item $\Tilde{Mac}$ and $\Tilde{Vrfy}$ works pretty much like the corresponding algorithms in $\Pi{}^F$
+\end{itemize}
+First of all, observe that $\Tilde{\Pi}$ is secure: since $f$ is a function and the adversary is required to output a valid pair $(m,t)$ ($m \notin{} \mathbb{Q}$),
+we are basically asking the adversary to guess a random string, namely $f(m)$. This probability is $\frac{1}{2^n}$.
+As a consequence:
+$$Pr(MacForge_{\Tilde{\Pi},A}(n) = 1) = \frac{1}{2^n}$$
+Now, let's prove that the behavior of any adversary $A$ against $\Tilde{\Pi}$ and $\Pi^F$ cannot be too different, i.e.,
+$$|Pr(MacForge_{\Tilde{\Pi},A}(n) = 1) - Pr(MacForge_{\Pi^F,A}(n) = 1)| \le{} \varepsilon(n)$$
+with $\varepsilon \in{} \mathcal{NGL}$.\\
+We can construct a distinguisher $D_A$ by exploiting the adversary $A$ (missing diagram).
+(Watch lesson for the remaining part...)
 %----------------------------------------------------------------------------------
 \subsubsection{Handling Variable-Length messages}
 $Mac^{*}(k, m)$:\\
 $m_1 \mid\mid{} \ldots{} \mid\mid{} m_d \; \leftarrow{} \; m$\\
-\textbf{//such that $\mid{} m_i \mid{} = \frac{n}{4}$}\\
 $\ell{} \; \leftarrow{} \; \mid{} m \mid{}$\\
+\textbf{//such that $\mid{} m_i \mid{} = \frac{\ell{}}{4}$}\\
 $r \; \leftarrow{} \; \{0, 1\}^{\frac{n}{4}}$\\
 $\textbf{for} \; i \; \leftarrow{} \; 1 \; \textbf{to} \; d \; \textbf{do}$\\
 $\quad{}\quad{} t_i \; \leftarrow{} \;$\\
@@ -81,8 +99,8 @@ $\quad{}\quad{}\quad{} Mac(k, r\mid\mid{}\ell\mid\mid{}i\mid\mid{}m_1)$\\
 \newline
 $Vrfy^{*}(k, m, (r, t_1, \ldots{}, t_d))$:\\
 $m_1 \mid\mid{} \ldots{} \mid\mid{} m_d \; \leftarrow{} \; m$\\
-\textbf{//such that $\mid{} m_i \mid{} = \frac{n}{4}$}\\
 $\ell{} \; \leftarrow{} \; \mid{} m \mid{}$\\
+\textbf{//such that $\mid{} m_i \mid{} = \frac{\ell{}}{4}$}\\
 $\textbf{for} \; i \; \leftarrow{} \; 1 \; \textbf{to} \; d \; \textbf{do}$\\
 $\quad{}\quad{} \textbf{if}$\\
 $\quad{}\quad{}\quad{} Vrfy(k, r\mid\mid{}\ell\mid\mid{}i\mid\mid{}m_1) = $\\
@@ -158,4 +176,6 @@ $\quad{}\quad{} z_i \; \leftarrow{} \; H(s, z_i - 1, \mid\mid{} x_i)$
 \begin{theorem}
     If $\Pi{}$ is a secure MAC and $(Gen', H)$ is collision-resistant, then $\Pi{}^H$ is secure. 
 \end{theorem}
+
+% \paragraph{Proof}
 \end{document}
