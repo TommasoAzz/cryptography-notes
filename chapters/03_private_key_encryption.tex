@@ -210,7 +210,11 @@ Let us prove the lemma by way of a reduction argument. In other words, we want t
 	\item[$\Rightarrow{}$] Out of an adversary $\mathcal{A}$ which wins over $\Pi{}$ in $PrivK^{eav}$
 	\item[$\Rightarrow{}$] An adversary $\mathcal{A}'$ which wins over $\Pi{}$ in $PrivK^{CPA}$
 \end{itemize}
-% ADD IMAGE!
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/PrivK_CPA_secure_PrivK_eav_secure}
+    \caption{Experiment scheme.}
+\end{figure}
 In other words,
 \begin{align*}
     Pr(PrivK^{CPA}_{\Pi{}, \mathcal{A}'}(n)=1) &= Pr(PrivK^{eav}_{\Pi{}, \mathcal{A}}(n)=1) \\
@@ -310,7 +314,7 @@ To do that, let's consider what happens along an interaction between any adversa
 \end{itemize}
 If $r=r_i$ for some $i$, then the adversary $\mathcal{A}$ can easily win the game, (because of course $\mathcal{A}$ knows $m_i$!).
 Otherwise, $\mathcal{A}$ is exactly in the same situation as the adversary for the OTP.
-\newpage
+%\newpage
 Call the event that $r=r_i$ \textit{'Repeat'} we can thus write:
 
 \begin{equation*}
