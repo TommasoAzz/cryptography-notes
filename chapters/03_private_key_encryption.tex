@@ -282,19 +282,23 @@ There are constructions that are meant to satisfy axioms of pseudo random functi
         \item $Gen$, rather than generating a string, generates, on input $1^n$, a random function from $\{0, 1\}^n$ to itself.
         \item $Enc$ and $Dec$ use the generated function in place of $F_k$ whenever necessary
     \end{itemize}
-    \item We want then to prove that $$\mid{} Pr(PrivK^{CPA}_{\mathcal{A}, \Pi{}^F}(n)=1)-Pr(PrivK^{CPA}_{\mathcal{A}, \Tilde{\Pi{}}}(n)=1) \mid{} \leq{} negl(n) \quad{} \textcolor{red}{(*)}$$ where $negl$ is negligible.
+    \item We want then to prove that $\forall{} \mathcal{A} \in{} PPT$ $$\mid{} Pr(PrivK^{CPA}_{\mathcal{A}, \Pi{}^F}(n)=1)-Pr(PrivK^{CPA}_{\mathcal{A}, \Tilde{\Pi{}}}(n)=1) \mid{} \leq{} negl(n) \quad{} \textcolor{red}{(*)}$$ where $negl$ is negligible.
     This, as usual, goes by contraposition:
     \begin{itemize}
         \item[$\Rightarrow{}$] Out of any adversary $\mathcal{A}$ violating our thesis \textcolor{red}{($*$)}
         \item[$\Rightarrow{}$] We build a distinguisher $D$ which wins over $F$.
     \end{itemize}
 \end{itemize}
-% ADD IMAGE!
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/security_fp_induced_scheme}
+    \caption{How a distinguisher D can be generated out of an attacker A.}
+\end{figure}
+\noindent
 Every call by $\mathcal{A}$ to the oracle for $Enc_k(\cdot{})$ is handled the same way as the encryption of $m_b$ namely by generating $r$ randomly, calling $F_k(\cdot{})$, etc$\ldots{}$
 
 $$Pr(PrivK^{CPA}_{\mathcal{A}, \Pi{}^F}(n) = 1) = Pr(D^{F_k(\cdot{})}(1^n) = 1)$$
 $$Pr(PrivK^{CPA}_{\mathcal{A}, \Tilde{\Pi{}}}(n) = 1) = Pr(D^{f(\cdot{})}(1^n) = 1)$$
-\newpage
 Since we know by hypothesis that $F$ is pseudorandom, we can conclude that $$\mid{} Pr(PrivK^{CPA}_{\mathcal{A}, \Pi{}^F}(n) = 1) - Pr(PrivK^{CPA}_{\mathcal{A}, \Tilde{\Pi{}}}(n) = 1) \mid{}$$
 $$= \mid{} Pr(D^{F_k(\cdot{})}(1^n) = 1) - Pr(D^{f(\cdot{})}(1^n) = 1) \mid{}$$
 $$= \epsilon(n) \quad \text{(by the fact $F$ is pseudorandom)}$$
@@ -305,7 +309,8 @@ To do that, let's consider what happens along an interaction between any adversa
     \item It also has the challenge ciphertext, namely $\langle{} r1, s1 \rangle{}$ s.t. $f(r) \oplus{} m_b = s$
 \end{itemize}
 If $r=r_i$ for some $i$, then the adversary $\mathcal{A}$ can easily win the game, (because of course $\mathcal{A}$ knows $m_i$!).
-Otherwise, $\mathcal{A}$ is exactly in the same situation as the adversary for the OTP.\\
+Otherwise, $\mathcal{A}$ is exactly in the same situation as the adversary for the OTP.
+\newpage
 Call the event that $r=r_i$ \textit{'Repeat'} we can thus write:
 
 \begin{equation*}
