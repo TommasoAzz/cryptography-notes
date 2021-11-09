@@ -44,11 +44,9 @@ In order to be safe and sound, the assumptions are very pessimistic:
 Let us present the new experiment:\\
 $MacForge_{A,\Pi}(n):$\\
 $k \leftarrow{} Gen(1^n)$\\
-\begin{align*}
-(m,t) \leftarrow{} A(1^n,Mac_k(\cdot)) & & \text{// Invoked once.}\\
-\mathbb{Q} \leftarrow{} \{m \; | \; A \text{ queries } Mac_k(\cdot) \text{ on } m\} & & \text{// Set of queries already performed by MacForge.}\\
-\textbf{Result:} (m \notin{\mathbb{Q}} \wedge{} Vrfy(k,m,t) = 1) & & \text{// $m$ must be new and $Vrfy$ must succeed.}
-\end{align*}
+$(m,t) \leftarrow{} A(1^n,Mac_k(\cdot)) \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\; \text{// Invoked once.}$\\
+$\mathbb{Q} \leftarrow \{m \; | \; A \text{ queries } Mac_k(\cdot) \text{ on } m\} \;\;\; \text{// Set of queries already performed by MacForge.}$\\
+$\textbf{Result:} (m \notin{\mathbb{Q}} \wedge{} Vrfy(k,m,t) = 1) \;\; \text{// $m$ must be new and $Vrfy$ must succeed.}$
 
 \begin{definition}
     A MAC $\Pi$ is secure if and only if for every PPT adversary $A$ there exists a function $\varepsilon{} \in{} \mathcal{NGL}$ such that:
@@ -82,8 +80,21 @@ $$Pr(MacForge_{\Tilde{\Pi},A}(n) = 1) = \frac{1}{2^n}$$
 Now, let's prove that the behaviour of any adversary $A$ against $\Tilde{\Pi}$ and $\Pi^F$ cannot be too different, i.e.,
 $$|Pr(MacForge_{\Tilde{\Pi},A}(n) = 1) - Pr(MacForge_{\Pi^F,A}(n) = 1)| \le{} \varepsilon(n)$$
 with $\varepsilon \in{} \mathcal{NGL}$.\\
-We can construct a distinguisher $D_A$ by exploiting the adversary $A$ (missing diagram).
-(Watch lesson for the remaining part...)
+We can construct a distinguisher $D_A$ by exploiting the adversary $A$ as follows:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/security_of_mac_given_pseudorandom_F}
+    \caption{How a distinguisher $D_A$ can be generated out of an attacker $A$.}
+\end{figure}
+
+\noindent
+By this construction of $D_A$ we notice the following:
+$$Pr(MacForge_{\Tilde{\Pi},A}(n) = 1) = Pr(D_A^{f(\cdot)}(1^n) = 1)$$
+$$Pr(MacForge_{\Pi^F,A}(n) = 1) = Pr(D_A^{F_k(\cdot)}(1^n) = 1)$$
+Since $F$ is pseudorandom, then we can prove what we wanted, that is:
+$$|Pr(D_A^{f(\cdot)}(1^n) = 1) - Pr(D_A^{F_k(\cdot)}(1^n) = 1)| \le{} \varepsilon(n)$$
+$$\Updownarrow$$
+$$|Pr(MacForge_{\Tilde{\Pi},A}(n) = 1) - Pr(MacForge_{\Pi^F,A}(n) = 1)| \le{} \varepsilon(n)$$
 %----------------------------------------------------------------------------------
 \subsubsection{Handling Variable-Length messages}
 $Mac^{*}(k, m)$:\\
