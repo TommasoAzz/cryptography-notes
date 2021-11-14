@@ -1,0 +1,80 @@
+\documentclass[../main]{subfiles}
+\begin{document}
+
+\chapter{Algebra, Number Theory and Related Assumptions}
+
+\begin{lemma}
+		If $n, m \in{} \mathbb{N}$ and $m > 1$, then n is invertible modulo m (there exists p such that np mod m = 1) whenever gcd(n, m) = 1, i. e. when n, m are comprime.
+\end{lemma}
+
+\noindent
+$\textbf{wFactor}_A (n):$\\
+$(x, y) \leftarrow{} \mathbb{N} \times{} \mathbb{N} \; with \; |x| = |y| = n$\\
+$N \leftarrow{} x \cdot{} y$\\
+$(z, w) \leftarrow{} A(N)$\\
+$\textbf{Result:} \; z \cdot{} w = N$\\
+$$Pr(wFactor_A (n) = 1) = \varepsilon{} (n)$$
+
+\noindent
+$\textbf{for} \; i \leftarrow{} 1 \; to \; t \; \textbf{do}$\\
+$\quad{}\quad{}r \leftarrow{} \{0, 1\}^{n-1}$\\
+$\quad{}\quad{}p \leftarrow{} 1\mid\mid r$\\
+$\quad{}\quad{}\textbf{if} \; p \; is \; prime \; \textbf{then}$\\
+$\quad{}\quad{}\quad{}\quad{}\textbf{Result:} \; p$\\
+$\textbf{Result:} \; fail$\\
+
+\begin{theorem}
+	There exists a constant c such that for every $n > 1$ the number of primes that can be represented in exactly n bits is at least equal to $\frac{c \cdot{} 2^{n-1}}{n}$.
+\end{theorem}
+
+\begin{theorem}
+	If $(\mathbb{G}, \cdot)$ has order m, then for each $g \in{} \mathbb{G}$, it is true that $g^m = 1_{\mathbb{G}}$.
+\end{theorem}
+
+\begin{corollary}
+	If $(\mathbb{G}, \cdot)$ has order $m > 1$, then for every $g \in{} \mathbb{G}$ and for every i, $g^i = g^{[i \; mod \; m]}$.
+\end{corollary}
+
+\begin{theorem}
+	Let $N > 1$. For every natural $e > 0$, we define $f_e : \mathbb{Z}_N* \rightarrow{} \mathbb{Z}_N*$ assuming $f_e (x) = x^e \; mod \; N$.
+	If $gcd(e, \Phi (N)) = 1$, then $f_e$ is a permutation. Moreover, if d is the inverse of e (modulo $\Phi (N)$), then $f_d$ is the inverse of $f_e$.
+\end{theorem}
+
+\noindent
+$\textbf{RSAInv}_{A, GenRSA}(n):$\\
+$(N, e, d) \leftarrow{} GenRSA(1^n)$\\
+$y \leftarrow{} \mathbb{Z}_N*$\\
+$x \leftarrow{} A(N, e, y)$\\
+$\textbf{Result:} \; x^e mod N = y$
+$$Pr(RSAInv_{A, GenRSA}(n) = 1) = \varepsilon{} (n)$$
+
+\noindent
+$(N, p, q) \leftarrow{} \textbf{GenModulus}(1^n)$\\
+$M \leftarrow{} (p-1)(q-1)$\\
+$e \leftarrow{} \{1, \ldots, M\} \; such \; that \; gcd(e, M) = 1$\\
+$d \leftarrow{} e^{-1} mod M$\\
+$\textbf{Result:} \; (N, e, d)$
+
+\begin{lemma}
+	If $\mathbb{G}$ has order m and $g \in{} \mathbb{G}$ has order i, then $i|m$.
+\end{lemma}
+
+\begin{theorem}
+	If $\mathbb{G}$ has prime order then $\mathbb{G}$ is cyclic and every $g \in{} \mathbb{G}$ with $g \neq{} 1_{\mathbb{G}}$ generates $\mathbb{G}.$
+\end{theorem}
+
+\noindent
+$\textbf{DLog}_{A, GenCG} (n):$\\
+$(\mathbb{G}, q, g) \leftarrow{} GenCG(1^n)$\\
+$h \leftarrow{} \mathbb{G}$\\
+$x \leftarrow{} A(\mathbb{G}, q, g, h)$\\
+$\textbf{Result:} \; g^x  =    n $
+$$Pr(DLog_{A, GenCG} (n) = 1) = \varepsilon{} (n)$$
+
+% slides 43-49
+
+\begin{theorem}
+	If factoring is hard relative to \textbf{GenModulus}, then $f_{GenModulus}$ is a one-way function.
+\end{theorem}
+
+\end{document}	
