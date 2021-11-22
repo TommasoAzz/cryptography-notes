@@ -83,19 +83,23 @@ $$Pr(DLog_{A, GenCG} (n) = 1) = \varepsilon{} (n)$$
 \end{theorem}
 
 \paragraph{Proof}
-	\begin{enumerate}
+	\begin{itemize}
 		\item Let us make the assumption that $\mathbb{G}$ is abelian (this of course makes the proof less general, but has the advantage of simplifying it).
 		\item Take $\mathbb{G} = \{g_1, \ldots, g_m\}$ and consider any $g \in{} \mathbb{G}$.
 		\item Of course
-				$$g_1 \cdot{} g_2 \cdot{} g_3 \cdot{} \ldots{} \cdot{} g_n = (gg_1)\cdot{}(gg_2)\ldots(gg_m)$$
-				Indeed, the factors in the RHS are all distinct elements of $\mathbb{G}$ because if $gg_i = gg_j$; then $g^{-1}gg_i = g^{-1}gg_j$ and $g_i = g_j$, which would contradict the fact that $|\{g_1, \ldots, g_m\}| = m$.
-		\item Since $\mathbb{G}$ is abelian, we can rearrange the rhs of \textcolor{red}{*} and obtain that
-				$$g_1g_2 \cdots{} g_m = g^m \cdot{} (g_1 \cdot{} g_2 \cdots g_m)^{-1}$$
+				$$g_1 \cdot{} g_2 \cdot{} g_3 \cdot{} \ldots{} \cdot{} g_m = (gg_1)\cdot{}(gg_2)\ldots(gg_m) \quad\quad \textcolor{red}{(*)}$$
+				Indeed, the factors in the rhs are all distinct elements of $\mathbb{G}$ because if $gg_i = gg_j$;
+				\newline
+				then $g^{-1}gg_i = g^{-1}gg_j$ and $g_i = g_j$, which would contradict the fact that $|\{g_1, \ldots, g_m\}| = m$.
+		\item Since $\mathbb{G}$ is abelian, we can rearrange the rhs of \textcolor{red}{(*)} and obtain that
+				$$g_1g_2 \cdots{} g_m = g^m \cdot{} (g_1 \cdot{} g_2 \cdots g_m)$$
 		\item We can then multiply both sides of this equation by $(g_1 g_2 \cdots{} g_m)^{-1}$ and obtain:
 				\begin{align*}
-					1_{\mathbb{G}} &= (g_1 g_2 \cdots{} g_m) \cdot (g_1 g_2 \cdots{} g_m)^{-1}
-					% Complete with recorder
+					1_{\mathbb{G}} &= (g_1 g_2 \cdots{} g_m) \cdot (g_1 g_2 \cdots{} g_m)^{-1}	\\
+					&= g^m \cdot (g_1 g_2 \cdots{} g_m) \cdot (g_1 g_2 \cdots{} g_m)^{-1}		\\
+					&= g^m \cdot 1_{\mathbb{G}}										\\
+					&= g^m
 				\end{align*}
-	\end{enumerate}
+	\end{itemize}
 
 \end{document}	
