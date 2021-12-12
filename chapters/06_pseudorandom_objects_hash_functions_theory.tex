@@ -4,12 +4,13 @@
 \chapter{Theoretical Constructions of Pseudorandom Objects
 and Hash Functions}
 
+\section{One-way functions}
+
 $Invert_{A, f}(n)$:\\
 $x \; \leftarrow{} \; \{0, 1\}^n$\\
 $y\; \leftarrow{} \; f(x)$\\
 $z \; \leftarrow{} \; A(1^n, y)$\\
 \textbf{Result}: $(f(z)=y)$
-
 
 \begin{definition}[One-way function]
     A function $f:\{0, 1\}^* \rightarrow \{0, 1\}^*$ is a \textbf{one-way function} if and only if there exists a polytime and deterministic algorithm which computes f and furthermore for every PPT A there exists a negligible $\varepsilon$ such that

@@ -100,23 +100,20 @@ $$|Pr(MacForge_{\Tilde{\Pi},A}(n) = 1) - Pr(MacForge_{\Pi^F,A}(n) = 1)| \le{} \v
 $Mac^{*}(k, m)$:\\
 $m_1 \mid\mid{} \ldots{} \mid\mid{} m_d \; \leftarrow{} \; m$\\
 $\ell{} \; \leftarrow{} \; \mid{} m \mid{}$\\
-\textbf{//such that $\mid{} m_i \mid{} = \frac{\ell{}}{4}$}\\
+\textbf{// such that $\mid{} m_i \mid{} = \frac{\ell{}}{4}$}\\
 $r \; \leftarrow{} \; \{0, 1\}^{\frac{n}{4}}$\\
 $\textbf{for} \; i \; \leftarrow{} \; 1 \; \textbf{to} \; d \; \textbf{do}$\\
-$\quad{}\quad{} t_i \; \leftarrow{} \;$\\
-$\quad{}\quad{}\quad{} Mac(k, r\mid\mid{}\ell\mid\mid{}i\mid\mid{}m_1)$\\
+$\quad{}\quad{} t_i \; \leftarrow{} Mac(k, \; r\mid\mid{}\ell\mid\mid{}i\mid\mid{}m_1)$\\
 \textbf{Result}: $(r, t_1, \ldots{},t_d)$
 \newline
 \newline
 $Vrfy^{*}(k, m, (r, t_1, \ldots{}, t_d))$:\\
 $m_1 \mid\mid{} \ldots{} \mid\mid{} m_d \; \leftarrow{} \; m$\\
 $\ell{} \; \leftarrow{} \; \mid{} m \mid{}$\\
-\textbf{//such that $\mid{} m_i \mid{} = \frac{\ell{}}{4}$}\\
+\textbf{// such that $\mid{} m_i \mid{} = \frac{\ell{}}{4}$}\\
 $\textbf{for} \; i \; \leftarrow{} \; 1 \; \textbf{to} \; d \; \textbf{do}$\\
-$\quad{}\quad{} \textbf{if}$\\
-$\quad{}\quad{}\quad{} Vrfy(k, r\mid\mid{}\ell\mid\mid{}i\mid\mid{}m_1) = $\\
-$\quad{}\quad{}\quad{} 0 \; \textbf{then}$\\
-$\quad{}\quad{}\quad{}\quad{}$ \textbf{Result}: 0\\
+$\quad{}\quad{} \textbf{if} \; Vrfy(k, r\mid\mid{}\ell\mid\mid{}i\mid\mid{}m_1) = 0 \; \textbf{then}$\\
+$\quad{}\quad{}\quad{} \textbf{Result}: 0$\\
 \textbf{Result}: 1
 
 \begin{theorem}
@@ -135,7 +132,7 @@ $\quad{}\quad{} t_i \; \leftarrow{} \; F_k(t_{i-1} \oplus{} m_i)$\\
 \textbf{Result}: $t_{\ell}$
 \newline
 \newline
-$Vrfy^{*}(k, m, t)$:\\
+$Vrfy^{CBC}(k, m, t)$:\\
 \textbf{if} $\ell{}(\mid k \mid) \cdot{} \mid{} k \mid{} \neq{} \mid{} m \mid{}$ \textbf{then}\\
 $\quad{}\quad{} \textbf{Result}: 0$\\
 $\textbf{Result}: t \stackrel{?}{=} MAC^{CBC}(k, m)$\\
@@ -167,6 +164,9 @@ $(x, y) \; \leftarrow{} \; A(s)$\\
 \begin{theorem}[Birthday theorem]
     Given $q$ uniformly chosen random values in a finite set of cardinality $N$, the probability that two of them are identical is $\frac{q^2}{N}$.
 \end{theorem}
+\paragraph{Proof}
+If we take $q=\Theta(2^{\frac{\ell}{2}})$, then we get $\Theta(\frac{(2^{\frac{\ell}{2}})^2}{2^\ell}) = \Theta(\frac{2^\ell}{2^\ell}) = \Theta(1)$.
+That is, we get a constant probability of success, independent of $q$ and $\ell$.
 %----------------------------------------------------------------------------------
 \subsubsection{The Merkle-Damgård transform}
 $H^{MD}(s, x):$\\
@@ -188,5 +188,23 @@ $\quad{}\quad{} z_i \; \leftarrow{} \; H(s, z_i - 1, \mid\mid{} x_i)$
     If $\Pi{}$ is a secure MAC and $(Gen', H)$ is collision-resistant, then $\Pi{}^H$ is secure. 
 \end{theorem}
 
-% \paragraph{Proof}
+\paragraph{Proof}
+Let's describe what $\Pi^H$ is: $\Pi^H = (Gen^H, Mac^H, Vrfy^H)$, with $Gen^H$ returning a pair of keys according to $H$ (i.e., $Gen'$) and according to $\Pi$ (i.e., $Gen$); $Mac^H$ returns $Mac_k(H^s(m))$.\\
+Let's take $Coll$ (which stands for \textit{collision}) as a probabilistic event that inclues all the executions in which there is $m \in{} \mathbb{Q}$ such that $H^s(m) = H^s(m^*)$ where $m^*$ is the message the adversary produces at the end of its execution.
+\begin{center}
+    $Pr(MacForge_{A,\Pi^H}(n)=1) =$\\
+    $Pr(MacForge_{A,\Pi^H}(n)=1 \wedge{} Coll)\; +$
+    $Pr(MacForge_{A,\Pi^H}(n)=1 \wedge{} \neg{}Coll) \leq{}$
+    $Pr(Coll) + Pr(MacForge_{A,\Pi^H}(n)=1 \wedge{} \neg{}Coll)$
+\end{center}
+We want to prove that both $Pr(Coll)$ and $Pr(MacForge_{A,\Pi^H}(n)=1 \wedge{} \neg{}Coll)$ are negligible:
+\begin{enumerate}
+    \item proving $Pr(Coll)$ requires a reduction building an adversary for $H$ out of $A$,
+    \item while proving $Pr(MacForge_{A,\Pi^H}(n)=1 \wedge{} \neg{}Coll)$ requires a reduction towards $\Pi$.
+\end{enumerate}
+Let's prove the first reduction:
+\begin{itemize}
+    \item we want to build, out of $A$, an adversary $C$ for $H$ such that $Pr(HashColl_{C,H}(n)=1)=Pr(Coll)$
+    \item TO COMPLETE...
+\end{itemize}
 \end{document}
